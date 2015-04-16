@@ -45,7 +45,7 @@ public class OperationalPanel extends JPanel {
 		// add animation to the panel
 		animation = new LoadingWheel(50);
 		add(animation);
-		animation.setVisible(false);
+		
 		// add all field labels
 		fieldLabels.add(new JLabel("Width"));
 		fieldLabels.add(new JLabel("Height"));
@@ -125,7 +125,7 @@ public class OperationalPanel extends JPanel {
 						while (fileNumCount < fileNum) {
 							File destination;
 							do {
-								animation.setVisible(true);
+								animation.start();
 								destination = new File("RandomImages"
 										+ File.separator
 										+ getFieldByName("Name").getText()
@@ -141,7 +141,7 @@ public class OperationalPanel extends JPanel {
 										+ " Name exist!!!");
 							} while (destination.exists());
 							try {
-								animation.setVisible(true);
+								animation.start();
 								ImageIO.write(
 										Main.window.imagePanel.getImage(),
 										"png", destination);
@@ -151,7 +151,7 @@ public class OperationalPanel extends JPanel {
 							}
 							Main.window.update();
 						}
-						animation.setVisible(false);
+						animation.stop();
 					}
 				}.start();
 			}
@@ -212,10 +212,11 @@ public class OperationalPanel extends JPanel {
 			c.gridheight = 1;
 			c.weightx = 0;
 			c.weighty = 0;
-			c.gridx = 1;
+			c.gridx = 0;
 			c.gridy = 1 + i;
 			layout.setConstraints(fieldLabels.get(i), c);
-			c.gridx = 2;
+			c.gridx = 1;
+			c.gridwidth =2;
 			c.weightx = 1;
 			layout.setConstraints(fields.get(i), c);
 		}

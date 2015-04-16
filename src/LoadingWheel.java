@@ -1,61 +1,96 @@
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import java.awt.*;
+import java.awt.event.*;
 
-public class LoadingWheel extends JPanel implements ActionListener {
+import javax.swing.*;
+
+public class LoadingWheel extends JComponent implements ActionListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Color primaryColor = Gui.randColor(false);
-	private Color secondaryColor = Gui.randColor(false);
-	private int sideLength;
-	private int secondarySideLength;
-	// private Point secondaryLoc;
-	private int animationSpeed = 2;
-
+	
+	
+	// Secondary color will substitute primary color. 
+	// Set both primary and secondary color random. 
+	private Color primaryColor;
+	private Color secondaryColor;;
+	
+	private double length; //diameter of the outer circle
+	private double innerLength; //diameter of the inner circle
+	
+	// Control the animation speed, in percentage. 
+	private double animationSpeed = 0.5;
+	
+	// Use timer to trigger action. 
 	private Timer animator;
+	private Timer accelerator;
+	
+	private boolean started;
 
-	public LoadingWheel(int sideLength) {
-		this.sideLength = sideLength;
-		setSize(sideLength, sideLength);
-		setOpaque(false);
-		secondarySideLength = 3;
-		// secondaryLoc = new Point(sideLength / 2, sideLength / 2);
-
-		animator = new Timer(30, this);
-		animator.start();
-
-		Timer speedTimer = new Timer(400, new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				animationSpeed += 1;
-			}
-		});
-		speedTimer.start();
+	public LoadingWheel(int mySideLength) {
+		length = mySideLength;
+		innerLength = 3;
+		setSize((int)length, (int)length);
+		setOpaque(false); //Otherwise color won't be shown
+		setVisible(false); //You must call start() method
+		
+		animator = new Timer(10, this);
+		accelerator = new Timer(100, this);
+	}
+	
+	private void resetall() {
+		reset();
+		primaryColor = Gui.randColor();
+		secondaryColor = Gui.randColor();
+	}
+	
+	private void reset() {
+		innerLength = 0;
+		animationSpeed = 2;
+	}
+	
+	public void start() {
+		if (!started) {
+			resetall();
+			animator.start();
+			accelerator.start();
+			started = true;
+			setVisible(true);
+		}
+	}
+	
+	public void stop() {
+		if (started) {
+			animator.stop();
+			accelerator.stop();
+			started = false;
+			setVisible(false);
+		}
 	}
 
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
+		
 		g.setColor(primaryColor);
-		g.fillOval(0, 0, sideLength, sideLength);
+		g.fillOval(0, 0, (int)length, (int)length);
+		
 		g.setColor(secondaryColor);
-		g.fillOval(sideLength / 2 - secondarySideLength / 2, sideLength / 2
-				- secondarySideLength / 2, secondarySideLength,
-				secondarySideLength);
+		g.fillOval((int)length / 2 - (int)(innerLength / 2), // Center the oval
+				(int)(length / 2) - (int)(innerLength / 2), 
+				(int)innerLength, (int)innerLength);
 	}
 
-	public void actionPerformed(ActionEvent e) {
-		secondarySideLength += animationSpeed;
-		if (secondarySideLength > sideLength) {
-			primaryColor = secondaryColor;
-			secondaryColor = Gui.randColor(false);
-			secondarySideLength = 0;
-			animationSpeed = 2;
+	public void actionPerformed(ActionEvent event) {
+		if (event.getSource() == animator) {
+			innerLength += animationSpeed / 100.0 * length;
+			if (innerLength > length) {
+				primaryColor = secondaryColor;
+				secondaryColor = Gui.randColor();
+				reset();
+			}
+		} else if (event.getSource() == accelerator) {
+			animationSpeed += 0.3;
 		}
 		repaint();
 	}

@@ -71,7 +71,11 @@ public class Gui extends JFrame {
 			}
 		}
 	}
-
+	
+	public static Color randColor() {
+		return randColor(false);
+	}
+	
 	public static Color randColor(boolean isGrayScale) {
 		if (isGrayScale) {
 			int c = (int) (Math.random() * 256);
