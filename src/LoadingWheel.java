@@ -1,28 +1,35 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JPanel;
+import javax.swing.Timer;
 
-public class LoadingWheel extends JPanel implements ActionListener{
+public class LoadingWheel extends JPanel implements ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Color primaryColor = Gui.randColor(false);
 	private Color secondaryColor = Gui.randColor(false);
 	private int sideLength;
 	private int secondarySideLength;
-	private Point secondaryLoc;
+	// private Point secondaryLoc;
 	private int animationSpeed = 2;
-	
+
 	private Timer animator;
-	
+
 	public LoadingWheel(int sideLength) {
 		this.sideLength = sideLength;
-		setSize(sideLength,sideLength);
+		setSize(sideLength, sideLength);
 		setOpaque(false);
 		secondarySideLength = 3;
-		secondaryLoc = new Point(sideLength / 2, sideLength / 2);
-		
-		animator = new Timer(30,this);
+		// secondaryLoc = new Point(sideLength / 2, sideLength / 2);
+
+		animator = new Timer(30, this);
 		animator.start();
-		
+
 		Timer speedTimer = new Timer(400, new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				animationSpeed += 1;
@@ -30,16 +37,18 @@ public class LoadingWheel extends JPanel implements ActionListener{
 		});
 		speedTimer.start();
 	}
-	
+
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
+
 		g.setColor(primaryColor);
 		g.fillOval(0, 0, sideLength, sideLength);
 		g.setColor(secondaryColor);
-		g.fillOval(sideLength / 2 - secondarySideLength / 2, sideLength / 2 - secondarySideLength / 2, secondarySideLength, secondarySideLength);
+		g.fillOval(sideLength / 2 - secondarySideLength / 2, sideLength / 2
+				- secondarySideLength / 2, secondarySideLength,
+				secondarySideLength);
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 		secondarySideLength += animationSpeed;
 		if (secondarySideLength > sideLength) {
@@ -50,6 +59,5 @@ public class LoadingWheel extends JPanel implements ActionListener{
 		}
 		repaint();
 	}
-	
-	
+
 }
