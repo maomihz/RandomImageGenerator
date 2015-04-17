@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -14,18 +13,13 @@ public class Gui extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	JButton btnRepaint, btnSave;
-
+	// image is gray scale
+	public static boolean isGrayScale, saveMultiple;
+	// 4 main panels
 	private PreviewPanel previewPanel;
 	private PresetPanel presetPanel;
 	public ImagePanel imagePanel;
 	private OperationalPanel operationPanel;
-	// image is gray scale
-	public static boolean isGrayScale, saveMultiple;
-	int fileNum;
-
-	// image width
-	int width, height;
 
 	public Gui() throws IOException {
 		// initialize the GuiFrame
@@ -50,7 +44,6 @@ public class Gui extends JFrame {
 				BufferedImage.TYPE_INT_ARGB));
 		previewPanel.add(imagePanel);
 		imagePanel.setPreferredSize(getPreferredSize());
-
 		// create and add preset panel
 		presetPanel = new PresetPanel(operationPanel);
 		getContentPane().add(presetPanel);
@@ -58,6 +51,7 @@ public class Gui extends JFrame {
 		update();
 	}
 
+	// [main method to generate image]!
 	private void drawImage(BufferedImage image, boolean isGrayScale,
 			int pixelWidth, int pixelHeight) {
 		if (pixelWidth <= 0 || pixelHeight <= 0 || image == null
@@ -88,6 +82,7 @@ public class Gui extends JFrame {
 		}
 	}
 
+	// update the width etc.
 	void update() {
 		int width = Integer.parseInt(operationPanel.getWidthText());
 		int height = Integer.parseInt(operationPanel.getHeightText());

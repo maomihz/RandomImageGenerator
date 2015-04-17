@@ -12,7 +12,6 @@ public class PresetPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	public PresetPanel(OperationalPanel operationPanel) {
 		setBorder(new TitledBorder(null, "Presets", TitledBorder.LEADING,
 				TitledBorder.TOP, null, null));
