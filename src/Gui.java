@@ -22,12 +22,8 @@ public class Gui extends JFrame {
 	private JTextField fileNameField;
 	private JTextField numberField;
 
-	private JPanel imagePanel, operationPanel, presetPanel;
-
-	// the picture
-	private BufferedImage image = new BufferedImage(345, 55,
-			BufferedImage.TYPE_INT_ARGB);
-
+	private JPanel operationPanel, presetPanel;
+	private ImagePanel imagePanel;
 	// image is gray scale
 	boolean isGrayScale;
 	boolean saveMultiple;
@@ -77,22 +73,8 @@ public class Gui extends JFrame {
 		getContentPane().add(previewPanel);
 		previewPanel.setLayout(null);
 
-		imagePanel = new JPanel() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				g.drawImage(image, 0, 0, null);
-
-			}
-
-			public Dimension getPreferredSize() {
-				return new Dimension(image.getWidth(), image.getHeight());
-			}
-		};
+		imagePanel = new ImagePanel(new BufferedImage(345, 55,
+				BufferedImage.TYPE_INT_ARGB));
 		imagePanel.setSize(imagePanel.getPreferredSize());
 		imagePanel.setLocation(0, 0);
 		previewPanel.add(imagePanel);
@@ -216,8 +198,8 @@ public class Gui extends JFrame {
 								destination = new File("RandomImages"
 										+ File.separator
 										+ fileNameField.getText() + "_"
-										+ image.getWidth() + "x"
-										+ image.getHeight() + "_"
+										+ imagePanel.getImage().getWidth() + "x"
+										+ imagePanel.getImage().getHeight() + "_"
 										+ fileNameCount + ".png");
 								fileNameCount++;
 								System.out.println(destination
@@ -225,7 +207,7 @@ public class Gui extends JFrame {
 							} while (destination.exists());
 							try {
 								animation.setVisible(true);
-								ImageIO.write(image, "png", destination);
+								ImageIO.write(imagePanel.getImage(), "png", destination);
 								fileNumCount++;
 								System.out.println("I wrote an image");
 							} catch (IOException e1) {
@@ -401,8 +383,8 @@ public class Gui extends JFrame {
 		int height = Integer.parseInt(heightField.getText());
 		int pixelWidth = Integer.parseInt(pixelWidthField.getText());
 		int pixelHeight = Integer.parseInt(pixelHeightField.getText());
-		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		drawImage(image, isGrayScale, pixelWidth, pixelHeight);
+		imagePanel.setImage(new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
+		drawImage(imagePanel.getImage(), isGrayScale, pixelWidth, pixelHeight);
 		repaint();
 		imagePanel.setSize(imagePanel.getPreferredSize());
 		System.out.println("Image Regenerated");
