@@ -13,13 +13,12 @@ public class Gui extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	// image is gray scale
-	public static boolean isGrayScale, saveMultiple;
+
 	// 4 main panels
-	private PreviewPanel previewPanel;
+	public PreviewPanel previewPanel;
 	public PresetPanel presetPanel;
 	public ImagePanel imagePanel;
-	private OperationalPanel operationPanel;
+	public OperationalPanel operationPanel;
 
 	public Gui() throws IOException {
 		// initialize the GuiFrame
@@ -96,7 +95,7 @@ public class Gui extends JFrame {
 				.getText());
 		imagePanel.setImage(new BufferedImage(width, height,
 				BufferedImage.TYPE_INT_ARGB));
-		drawImage(imagePanel.getImage(), isGrayScale, pixelWidth, pixelHeight);
+		drawImage(imagePanel.getImage(), operationPanel.isGrayScale(), pixelWidth, pixelHeight);
 		repaint();
 		imagePanel.setSize(imagePanel.getPreferredSize());
 		System.out.println("Image Regenerated");

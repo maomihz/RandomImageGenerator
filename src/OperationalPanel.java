@@ -45,7 +45,7 @@ public class OperationalPanel extends JPanel {
 		// add animation to the panel
 		animation = new LoadingWheel(50);
 		add(animation);
-		
+
 		// add all field labels
 		fieldLabels.add(new JLabel("Width"));
 		fieldLabels.add(new JLabel("Height"));
@@ -70,11 +70,6 @@ public class OperationalPanel extends JPanel {
 		chckbxGrayscale = new JCheckBox("GrayScale");
 		chckbxGrayscale.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				if (((JCheckBox) e.getSource()).isSelected()) {
-					Gui.isGrayScale = true;
-				} else {
-					Gui.isGrayScale = false;
-				}
 				Main.window.update();
 			}
 		});
@@ -87,11 +82,9 @@ public class OperationalPanel extends JPanel {
 				if (((JCheckBox) e.getSource()).isSelected()) {
 					getFieldByName("Number").setVisible(true);
 					fieldLabels.get(4).setVisible(true);
-					Gui.saveMultiple = true;
 				} else {
 					getFieldByName("Number").setVisible(false);
 					fieldLabels.get(4).setVisible(false);
-					Gui.saveMultiple = false;
 				}
 			}
 		});
@@ -189,7 +182,7 @@ public class OperationalPanel extends JPanel {
 		GridBagLayout layout = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
 		setLayout(layout);
-		c.fill=GridBagConstraints.BOTH;
+		c.fill = GridBagConstraints.BOTH;
 		// set animation
 		c.gridwidth = 1;
 		c.gridheight = 1;
@@ -216,7 +209,7 @@ public class OperationalPanel extends JPanel {
 			c.gridy = 1 + i;
 			layout.setConstraints(fieldLabels.get(i), c);
 			c.gridx = 1;
-			c.gridwidth =2;
+			c.gridwidth = 2;
 			c.weightx = 1;
 			layout.setConstraints(fields.get(i), c);
 		}
@@ -253,6 +246,14 @@ public class OperationalPanel extends JPanel {
 				return fields.get(i);
 		}
 		return null;
+	}
+
+	public boolean isGrayScale() {
+		return chckbxGrayscale.isSelected();
+	}
+
+	public boolean saveNultiple() {
+		return chckbxSaveMultiple.isSelected();
 	}
 
 	public String getWidthText() {
