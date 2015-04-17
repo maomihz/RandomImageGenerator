@@ -1,12 +1,14 @@
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -14,7 +16,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 public class OperationalPanel extends JPanel {
 
@@ -22,14 +23,13 @@ public class OperationalPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField widthField;
-	private JTextField heightField;
-	private JTextField pixelWidthField;
-	private JTextField pixelHeightField;
-	private JTextField fileNameField;
-	private JTextField numberField;
-	private JCheckBox chckbxGrayscale;
-	final LoadingWheel animation;
+	// All components
+	private JCheckBox chckbxGrayscale, chckbxSaveMultiple;
+	private ArrayList<JLabel> fieldLabels = new ArrayList<JLabel>(5);
+	private ArrayList<JTextField> fields = new ArrayList<JTextField>(5);
+	private JLabel title;
+	private JButton btnRepaint, btnSave, btnExit, btnShowPresets;
+	private LoadingWheel animation;
 
 	public JCheckBox getChckbxGrayscale() {
 		return chckbxGrayscale;
@@ -38,69 +38,34 @@ public class OperationalPanel extends JPanel {
 	public OperationalPanel() {
 		setSize(300, 450);
 		setBackground(Color.LIGHT_GRAY);
-		setLayout(null);
-
+		// add title to the panel
+		title = new JLabel("Setting");
+		title.setFont(new Font("serif", Font.BOLD, 40));
+		add(title);
+		// add animation to the panel
 		animation = new LoadingWheel(50);
-		animation.setLocation(10, 10);
 		add(animation);
 		animation.setVisible(false);
-
-		JLabel lblHeight = new JLabel("Height");
-		lblHeight.setBounds(10, 122, 118, 16);
-		lblHeight.setHorizontalAlignment(SwingConstants.RIGHT);
-		add(lblHeight);
-
-		JLabel lblWidthPerPixel = new JLabel("Pixel Width");
-		lblWidthPerPixel.setBounds(10, 156, 118, 16);
-		lblWidthPerPixel.setHorizontalAlignment(SwingConstants.RIGHT);
-		add(lblWidthPerPixel);
-
-		JLabel lblHeightPerPixel = new JLabel("Pixel Height");
-		lblHeightPerPixel.setBounds(10, 190, 118, 16);
-		lblHeightPerPixel.setHorizontalAlignment(SwingConstants.RIGHT);
-		add(lblHeightPerPixel);
-
-		JLabel lblWidth = new JLabel("Width");
-		lblWidth.setBounds(10, 90, 118, 16);
-		lblWidth.setHorizontalAlignment(SwingConstants.RIGHT);
-		add(lblWidth);
-
-		widthField = new JTextField();
-		widthField.setText("640");
-		widthField.setBounds(128, 84, 134, 28);
-		add(widthField);
-		widthField.setColumns(10);
-
-		heightField = new JTextField();
-		heightField.setText("960");
-		heightField.setBounds(128, 116, 134, 28);
-		add(heightField);
-		heightField.setColumns(10);
-
-		pixelWidthField = new JTextField();
-		getPixelWidthField().setText("20");
-		getPixelWidthField().setBounds(128, 150, 134, 28);
-		add(getPixelWidthField());
-		getPixelWidthField().setColumns(10);
-
-		pixelHeightField = new JTextField();
-		getPixelHeightField().setText("20");
-		getPixelHeightField().setBounds(128, 184, 134, 28);
-		add(getPixelHeightField());
-		getPixelHeightField().setColumns(10);
-
-		final JLabel lblNumber = new JLabel("Number");
-		lblNumber.setVisible(false);
-		lblNumber.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNumber.setBounds(10, 316, 118, 16);
-		add(lblNumber);
-
-		numberField = new JTextField();
-		numberField.setText("1");
-		numberField.setVisible(false);
-		numberField.setBounds(128, 310, 134, 28);
-		add(numberField);
-		numberField.setColumns(10);
+		// add all field labels
+		fieldLabels.add(new JLabel("Width"));
+		fieldLabels.add(new JLabel("Height"));
+		fieldLabels.add(new JLabel("Pixel Width"));
+		fieldLabels.add(new JLabel("Pixel Height"));
+		fieldLabels.add(new JLabel("Number"));
+		fieldLabels.add(new JLabel("Name"));
+		// add all labels and fields to the panel
+		for (JLabel label : fieldLabels) {
+			fields.add(new JTextField(""));
+			add(label);
+			add(fields.get(fieldLabels.indexOf(label)));
+		}
+		// set Default values
+		getFieldByName("Width").setText("680");
+		getFieldByName("Height").setText("960");
+		getFieldByName("Pixel Width").setText("20");
+		getFieldByName("Pixel Height").setText("20");
+		getFieldByName("Number").setText("10");
+		getFieldByName("Name").setText("random");
 
 		chckbxGrayscale = new JCheckBox("GrayScale");
 		chckbxGrayscale.addItemListener(new ItemListener() {
@@ -113,29 +78,28 @@ public class OperationalPanel extends JPanel {
 				Main.window.update();
 			}
 		});
-		chckbxGrayscale.setBounds(128, 218, 134, 23);
 		chckbxGrayscale.setOpaque(false);
 		add(chckbxGrayscale);
 
-		final JCheckBox chckbxSaveMultiple = new JCheckBox("Save Multiple");
+		chckbxSaveMultiple = new JCheckBox("Save Multiple");
 		chckbxSaveMultiple.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (((JCheckBox) e.getSource()).isSelected()) {
-					numberField.setVisible(true);
-					lblNumber.setVisible(true);
+					getFieldByName("Number").setVisible(true);
+					fieldLabels.get(4).setVisible(true);
 					Gui.saveMultiple = true;
 				} else {
-					numberField.setVisible(false);
-					lblNumber.setVisible(false);
+					getFieldByName("Number").setVisible(false);
+					fieldLabels.get(4).setVisible(false);
 					Gui.saveMultiple = false;
 				}
 			}
 		});
-		chckbxSaveMultiple.setBounds(128, 247, 134, 23);
 		chckbxSaveMultiple.setOpaque(false);
+		chckbxSaveMultiple.setSelected(true);
 		add(chckbxSaveMultiple);
 
-		JButton btnRepaint = new JButton("Preview");
+		btnRepaint = new JButton("Preview");
 		btnRepaint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Main.window.update();
@@ -144,7 +108,7 @@ public class OperationalPanel extends JPanel {
 		btnRepaint.setBounds(16, 350, 91, 29);
 		add(btnRepaint);
 
-		JButton btnSave = new JButton("Save");
+		btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Thread() {
@@ -152,7 +116,8 @@ public class OperationalPanel extends JPanel {
 
 						int fileNameCount = 0;
 						int fileNumCount = 0;
-						int fileNum = Integer.parseInt(numberField.getText());
+						int fileNum = Integer.parseInt(getFieldByName("Number")
+								.getText());
 						File destFolder = new File("RandomImages");
 						if (!destFolder.exists())
 							destFolder.mkdir();
@@ -163,7 +128,7 @@ public class OperationalPanel extends JPanel {
 								animation.setVisible(true);
 								destination = new File("RandomImages"
 										+ File.separator
-										+ fileNameField.getText()
+										+ getFieldByName("Name").getText()
 										+ "_"
 										+ Main.window.imagePanel.getImage()
 												.getWidth()
@@ -191,62 +156,125 @@ public class OperationalPanel extends JPanel {
 				}.start();
 			}
 		});
-		btnSave.setBounds(119, 350, 75, 29);
 		add(btnSave);
 
-		JButton btnExit = new JButton("Exit");
+		btnShowPresets = new JButton("Show Presets");
+		btnShowPresets.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (Main.window.presetPanel.isVisible()) {
+					((JButton) e.getSource()).setText("Show Presets");
+					Main.window.presetPanel.setVisible(false);
+					System.out.println("Hide Presets");
+				} else {
+					((JButton) e.getSource()).setText("Hide Presets");
+					Main.window.presetPanel.setVisible(true);
+					System.out.println("Show Presets");
+				}
+			}
+		});
+		btnShowPresets.setBounds(74, 389, 150, 29);
+		add(btnShowPresets);
+
+		btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
 		});
-		btnExit.setBounds(206, 350, 75, 29);
 		add(btnExit);
-
-		JLabel lblName = new JLabel("Name");
-		lblName.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblName.setBounds(10, 282, 118, 16);
-		add(lblName);
-
-		fileNameField = new JTextField();
-		fileNameField.setText("random");
-		fileNameField.setBounds(128, 276, 70, 28);
-		add(fileNameField);
-		fileNameField.setColumns(10);
-
-		JLabel lblpng = new JLabel(".png");
-		lblpng.setBounds(199, 282, 39, 16);
-		add(lblpng);
+		reArranegeLayout();
 	}
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		g.setFont(new Font("Serif", Font.PLAIN, 48));
-		g.drawString("Settings", 80, 50);
+	private void reArranegeLayout() {
+		GridBagLayout layout = new GridBagLayout();
+		GridBagConstraints c = new GridBagConstraints();
+		setLayout(layout);
+		c.fill=GridBagConstraints.BOTH;
+		// set animation
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.weightx = 0;
+		c.weighty = 0;
+		c.gridx = 0;
+		c.gridy = 0;
+		layout.setConstraints(animation, c);
+		// set title
+		c.gridwidth = 3;
+		c.gridheight = 1;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.gridx = 1;
+		c.gridy = 0;
+		layout.setConstraints(title, c);
+		// set fields and field labels
+		for (int i = 0; i < fields.size(); i++) {
+			c.gridwidth = 1;
+			c.gridheight = 1;
+			c.weightx = 0;
+			c.weighty = 0;
+			c.gridx = 1;
+			c.gridy = 1 + i;
+			layout.setConstraints(fieldLabels.get(i), c);
+			c.gridx = 2;
+			c.weightx = 1;
+			layout.setConstraints(fields.get(i), c);
+		}
+		// set check boxes
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.weightx = 0;
+		c.weighty = 0;
+		c.gridx = 0;
+		c.gridy = 2 + fieldLabels.size();
+		layout.setConstraints(chckbxGrayscale, c);
+		c.gridx = 1;
+		layout.setConstraints(chckbxSaveMultiple, c);
+		// set buttons
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.weightx = 0;
+		c.weighty = 0;
+		c.gridx = 0;
+		c.gridy = 3 + fieldLabels.size();
+		layout.setConstraints(btnRepaint, c);
+		c.gridx = 1;
+		layout.setConstraints(btnSave, c);
+		c.gridx = 2;
+		layout.setConstraints(btnShowPresets, c);
+		c.gridx = 1;
+		c.gridy = 4 + fieldLabels.size();
+		layout.setConstraints(btnExit, c);
+	}
+
+	private JTextField getFieldByName(String name) {
+		for (int i = 0; i < fields.size(); i++) {
+			if (name == fieldLabels.get(i).getText())
+				return fields.get(i);
+		}
+		return null;
 	}
 
 	public String getWidthText() {
-		return widthField.getText();
+		return fields.get(0).getText();
 	}
 
 	public String getHeightText() {
-		return heightField.getText();
+		return fields.get(1).getText();
 	}
 
 	public void setWidthText(String s) {
-		widthField.setText(s);
+		fields.get(0).setText(s);
 	}
 
 	public void setHeightText(String s) {
-		heightField.setText(s);
+		fields.get(1).setText(s);
 	}
 
 	public JTextField getPixelWidthField() {
-		return pixelWidthField;
+		return fields.get(2);
 	}
 
 	public JTextField getPixelHeightField() {
-		return pixelHeightField;
+		return fields.get(3);
 	}
 }

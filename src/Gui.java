@@ -17,7 +17,7 @@ public class Gui extends JFrame {
 	public static boolean isGrayScale, saveMultiple;
 	// 4 main panels
 	private PreviewPanel previewPanel;
-	private PresetPanel presetPanel;
+	public PresetPanel presetPanel;
 	public ImagePanel imagePanel;
 	private OperationalPanel operationPanel;
 

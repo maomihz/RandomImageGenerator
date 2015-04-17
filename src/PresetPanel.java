@@ -34,23 +34,6 @@ public class PresetPanel extends JPanel {
 		for (JButton button : buttons) {
 			add(button);
 		}
-
-		JButton btnShowPresets = new JButton("Show Presets");
-		btnShowPresets.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (isVisible()) {
-					((JButton) e.getSource()).setText("Show Presets");
-					setVisible(false);
-					System.out.println("Hide Presets");
-				} else {
-					((JButton) e.getSource()).setText("Hide Presets");
-					setVisible(true);
-					System.out.println("Show Presets");
-				}
-			}
-		});
-		btnShowPresets.setBounds(74, 389, 150, 29);
-		operationPanel.add(btnShowPresets);
 	}
 	
 }
