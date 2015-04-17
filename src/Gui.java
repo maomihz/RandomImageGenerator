@@ -16,9 +16,8 @@ public class Gui extends JFrame {
 
 	// 4 main panels
 	public PreviewPanel previewPanel;
-	public PresetPanel presetPanel;
 	public ImagePanel imagePanel;
-	public OperationalPanel operationPanel;
+	public SettingPanel settingPanel;
 
 	public Gui() throws IOException {
 		// initialize the GuiFrame
@@ -32,20 +31,21 @@ public class Gui extends JFrame {
 		setFocusTraversalKeysEnabled(false);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		// create and add operation panel
-		operationPanel = new OperationalPanel();
-		getContentPane().add(operationPanel);
 		// create and add preview panel
 		previewPanel = new PreviewPanel();
 		getContentPane().add(previewPanel);
+		// create and add setting panel
+		OperationalPanel o = new OperationalPanel();
+		PresetPanel p = new PresetPanel(o);
+		o.setPresetPanel(p);
+		settingPanel = new SettingPanel(o, p);
+		settingPanel.setSize(300, 570);
+		getContentPane().add(settingPanel);
 		// create and add image panel to preview panel
 		imagePanel = new ImagePanel(new BufferedImage(345, 55,
 				BufferedImage.TYPE_INT_ARGB));
 		previewPanel.add(imagePanel);
 		imagePanel.setPreferredSize(getPreferredSize());
-		// create and add preset panel
-		presetPanel = new PresetPanel(operationPanel);
-		getContentPane().add(presetPanel);
 
 		update();
 	}
@@ -70,11 +70,11 @@ public class Gui extends JFrame {
 			}
 		}
 	}
-	
+
 	public static Color randColor() {
 		return randColor(false);
 	}
-	
+
 	public static Color randColor(boolean isGrayScale) {
 		if (isGrayScale) {
 			int c = (int) (Math.random() * 256);
@@ -87,15 +87,14 @@ public class Gui extends JFrame {
 
 	// update the width etc.
 	void update() {
-		int width = Integer.parseInt(operationPanel.getWidthText());
-		int height = Integer.parseInt(operationPanel.getHeightText());
-		int pixelWidth = Integer.parseInt(operationPanel.getPixelWidthField()
-				.getText());
-		int pixelHeight = Integer.parseInt(operationPanel.getPixelHeightField()
-				.getText());
+		int width = settingPanel.getWidthOption();
+		int height = settingPanel.getHeightOption();
+		int pixelWidth = settingPanel.getPixelWidthOption();
+		int pixelHeight = settingPanel.getPixelHeightOption();
 		imagePanel.setImage(new BufferedImage(width, height,
 				BufferedImage.TYPE_INT_ARGB));
-		drawImage(imagePanel.getImage(), operationPanel.isGrayScale(), pixelWidth, pixelHeight);
+		drawImage(imagePanel.getImage(), settingPanel.getGrayScale(),
+				pixelWidth, pixelHeight);
 		repaint();
 		imagePanel.setSize(imagePanel.getPreferredSize());
 		System.out.println("Image Regenerated");

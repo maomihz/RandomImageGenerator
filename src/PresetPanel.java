@@ -16,9 +16,7 @@ public class PresetPanel extends JPanel {
 	private ArrayList<PresetButton> buttons = new ArrayList<PresetButton>();
 
 	public PresetPanel(OperationalPanel operationPanel) {
-		setSize(300, 150);
 		setBackground(new Color(225, 225, 225));
-		setLocation(0, 450);
 		setVisible(false);
 		setBorder(new TitledBorder(null, "Presets", TitledBorder.LEADING,
 				TitledBorder.TOP, null, null));

@@ -31,12 +31,13 @@ public class OperationalPanel extends JPanel {
 	private JButton btnRepaint, btnSave, btnExit, btnShowPresets;
 	private LoadingWheel animation;
 
+	private PresetPanel presetPanel;
+
 	public JCheckBox getChckbxGrayscale() {
 		return chckbxGrayscale;
 	}
 
 	public OperationalPanel() {
-		setSize(300, 450);
 		setBackground(Color.LIGHT_GRAY);
 		// add title to the panel
 		title = new JLabel("Setting");
@@ -154,13 +155,13 @@ public class OperationalPanel extends JPanel {
 		btnShowPresets = new JButton("Show Presets");
 		btnShowPresets.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (Main.window.presetPanel.isVisible()) {
+				if (presetPanel.isVisible()) {
 					((JButton) e.getSource()).setText("Show Presets");
-					Main.window.presetPanel.setVisible(false);
+					presetPanel.setVisible(false);
 					System.out.println("Hide Presets");
 				} else {
 					((JButton) e.getSource()).setText("Hide Presets");
-					Main.window.presetPanel.setVisible(true);
+					presetPanel.setVisible(true);
 					System.out.println("Show Presets");
 				}
 			}
@@ -238,6 +239,10 @@ public class OperationalPanel extends JPanel {
 		c.gridx = 1;
 		c.gridy = 4 + fieldLabels.size();
 		layout.setConstraints(btnExit, c);
+	}
+
+	public void setPresetPanel(PresetPanel presetPanel) {
+		this.presetPanel = presetPanel;
 	}
 
 	private JTextField getFieldByName(String name) {
