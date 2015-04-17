@@ -1,6 +1,5 @@
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -42,23 +41,20 @@ public class Gui extends JFrame {
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
 		setResizable(false);
-
+		setLocationRelativeTo(null);
+		// create and add operation panel
 		operationPanel = new OperationalPanel();
 		getContentPane().add(operationPanel);
-
-		previewPanel = new JPanel();
-		previewPanel.setSize(500, 600);
-		previewPanel.setBackground(SystemColor.window);
-		previewPanel.setLocation(300, 0);
+		// create and add preview panel
+		previewPanel = new PreviewPanel();
 		getContentPane().add(previewPanel);
-		previewPanel.setLayout(null);
-
+		//create and add image panel to preview panel
 		imagePanel = new ImagePanel(new BufferedImage(345, 55,
 				BufferedImage.TYPE_INT_ARGB));
 		previewPanel.add(imagePanel);
 		imagePanel.setPreferredSize(getPreferredSize());
 
-		// preset panel
+		// create preset panel
 		presetPanel = new JPanel();
 		presetPanel.setBorder(new TitledBorder(null, "Presets",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
