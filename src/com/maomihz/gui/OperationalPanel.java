@@ -151,15 +151,12 @@ public class OperationalPanel extends JPanel implements GridBag {
 												.getHeight() + "_"
 										+ fileNameCount + ".png");
 								fileNameCount++;
-								System.out.println(destination
-										+ " Name exist!!!");
 							} while (destination.exists());
 							try {
 								animation.start();
 								ImageIO.write(Main.window.getPreviewImage(),
 										"png", destination);
 								fileNumCount++;
-								System.out.println("I wrote an image");
 							} catch (IOException e1) {
 							}
 							Main.window.update();
@@ -177,11 +174,9 @@ public class OperationalPanel extends JPanel implements GridBag {
 				if (presetPanel.isVisible()) {
 					((JButton) e.getSource()).setText("Show Presets");
 					presetPanel.setVisible(false);
-					System.out.println("Hide Presets");
 				} else {
 					((JButton) e.getSource()).setText("Hide Presets");
 					presetPanel.setVisible(true);
-					System.out.println("Show Presets");
 				}
 			}
 		});

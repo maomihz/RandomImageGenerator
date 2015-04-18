@@ -52,6 +52,7 @@ public class Gui extends JFrame implements GridBag {
 	public void update() {
 		previewPanel.getImagePanel().update();
 		setSize(getPreferredSize());
+		setLocationRelativeTo(null);
 	}
 
 	public static Color randColor() {

@@ -89,6 +89,5 @@ public class ImagePanel extends JPanel {
 				imageConstraints.grayScale);
 		repaint();
 		setSize(getPreferredSize());
-		System.out.println("Image Regenerated");
 	}
 }
