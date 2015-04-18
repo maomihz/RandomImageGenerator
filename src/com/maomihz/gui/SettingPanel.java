@@ -1,10 +1,11 @@
 package com.maomihz.gui;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JPanel;
 
-public class SettingPanel extends JPanel {
+public class SettingPanel extends JPanel implements GridBag {
 
 	/**
 	 * 
@@ -19,21 +20,7 @@ public class SettingPanel extends JPanel {
 		this.presetPanel = presetPanel;
 		add(operationPanel);
 		add(presetPanel);
-		// set the layout
-		GridBagLayout layout = new GridBagLayout();
-		GridBagConstraints s = new GridBagConstraints();
-		s.fill = GridBagConstraints.BOTH;
-		s.gridx = 0;
-		s.gridy = 0;
-		s.weightx = 1;
-		s.weighty = 1;
-		s.gridwidth = 1;
-		s.gridheight = 3;
-		layout.setConstraints(operationPanel, s);
-		s.gridy = 3;
-		s.gridheight = 1;
-		layout.setConstraints(presetPanel, s);
-		setLayout(layout);
+		setGridBagLayout();
 	}
 
 	public OperationalPanel getOperationPanel() {
@@ -62,5 +49,27 @@ public class SettingPanel extends JPanel {
 
 	public boolean getGrayScale() {
 		return operationPanel.isGrayScale();
+	}
+
+	@Override
+	public void setGridBagLayout() {
+		// set the layout
+		GridBagLayout layout = new GridBagLayout();
+		// initiate constraints
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		constraints.gridwidth = 1;
+		constraints.gridheight = 3;
+		constraints.ipadx = 0;
+		constraints.ipadx = 1;
+		//add two panels
+		layout.setConstraints(operationPanel, constraints);
+		constraints.gridy = 3;
+		constraints.gridheight = 1;
+		layout.setConstraints(presetPanel, constraints);
+		setLayout(layout);
 	}
 }

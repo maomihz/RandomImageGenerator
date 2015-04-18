@@ -1,6 +1,8 @@
 package com.maomihz.gui;
+
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-public class Gui extends JFrame {
+public class Gui extends JFrame implements GridBag {
 	/**
 	 * 
 	 */
@@ -99,5 +101,26 @@ public class Gui extends JFrame {
 		repaint();
 		imagePanel.setSize(imagePanel.getPreferredSize());
 		System.out.println("Image Regenerated");
+	}
+
+	@Override
+	public void setGridBagLayout() {
+		GridBagLayout layout = new GridBagLayout();
+		constraints.fill = BOTH;
+		setLayout(layout);
+		// initiate constraints
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 2;
+		constraints.gridheight = 1;
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		constraints.ipadx = 0;
+		constraints.ipady = 0;
+		// set setting panel
+		layout.setConstraints(settingPanel, constraints);
+		// set preview panel
+		constraints.gridwidth = 5;
+		layout.setConstraints(previewPanel, constraints);
 	}
 }

@@ -1,4 +1,5 @@
 package com.maomihz.gui;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -20,7 +21,7 @@ import javax.swing.JTextField;
 
 import com.maomihz.data.Main;
 
-public class OperationalPanel extends JPanel {
+public class OperationalPanel extends JPanel implements GridBag {
 
 	/**
 	 * 
@@ -179,69 +180,68 @@ public class OperationalPanel extends JPanel {
 			}
 		});
 		add(btnExit);
-		reArranegeLayout();
+		setGridBagLayout();
 	}
 
-	private void reArranegeLayout() {
+	public void setGridBagLayout() {
 		GridBagLayout layout = new GridBagLayout();
-		GridBagConstraints c = new GridBagConstraints();
 		setLayout(layout);
-		c.fill = GridBagConstraints.BOTH;
+		constraints.fill = GridBagConstraints.BOTH;
 		// set animation
-		c.gridwidth = 1;
-		c.gridheight = 1;
-		c.weightx = 0;
-		c.weighty = 0;
-		c.gridx = 0;
-		c.gridy = 0;
-		layout.setConstraints(animation, c);
+		constraints.gridwidth = 1;
+		constraints.gridheight = 1;
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		layout.setConstraints(animation, constraints);
 		// set title
-		c.gridwidth = 3;
-		c.gridheight = 1;
-		c.weightx = 1;
-		c.weighty = 1;
-		c.gridx = 1;
-		c.gridy = 0;
-		layout.setConstraints(title, c);
+		constraints.gridwidth = 3;
+		constraints.gridheight = 1;
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		constraints.gridx = 1;
+		constraints.gridy = 0;
+		layout.setConstraints(title, constraints);
 		// set fields and field labels
 		for (int i = 0; i < fields.size(); i++) {
-			c.gridwidth = 1;
-			c.gridheight = 1;
-			c.weightx = 0;
-			c.weighty = 0;
-			c.gridx = 0;
-			c.gridy = 1 + i;
-			layout.setConstraints(fieldLabels.get(i), c);
-			c.gridx = 1;
-			c.gridwidth = 2;
-			c.weightx = 1;
-			layout.setConstraints(fields.get(i), c);
+			constraints.gridwidth = 1;
+			constraints.gridheight = 1;
+			constraints.weightx = 0;
+			constraints.weighty = 0;
+			constraints.gridx = 0;
+			constraints.gridy = 1 + i;
+			layout.setConstraints(fieldLabels.get(i), constraints);
+			constraints.gridx = 1;
+			constraints.gridwidth = 2;
+			constraints.weightx = 1;
+			layout.setConstraints(fields.get(i), constraints);
 		}
 		// set check boxes
-		c.gridwidth = 1;
-		c.gridheight = 1;
-		c.weightx = 0;
-		c.weighty = 0;
-		c.gridx = 0;
-		c.gridy = 2 + fieldLabels.size();
-		layout.setConstraints(chckbxGrayscale, c);
-		c.gridx = 1;
-		layout.setConstraints(chckbxSaveMultiple, c);
+		constraints.gridwidth = 1;
+		constraints.gridheight = 1;
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		constraints.gridx = 0;
+		constraints.gridy = 2 + fieldLabels.size();
+		layout.setConstraints(chckbxGrayscale, constraints);
+		constraints.gridx = 1;
+		layout.setConstraints(chckbxSaveMultiple, constraints);
 		// set buttons
-		c.gridwidth = 1;
-		c.gridheight = 1;
-		c.weightx = 0;
-		c.weighty = 0;
-		c.gridx = 0;
-		c.gridy = 3 + fieldLabels.size();
-		layout.setConstraints(btnRepaint, c);
-		c.gridx = 1;
-		layout.setConstraints(btnSave, c);
-		c.gridx = 2;
-		layout.setConstraints(btnShowPresets, c);
-		c.gridx = 1;
-		c.gridy = 4 + fieldLabels.size();
-		layout.setConstraints(btnExit, c);
+		constraints.gridwidth = 1;
+		constraints.gridheight = 1;
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		constraints.gridx = 0;
+		constraints.gridy = 3 + fieldLabels.size();
+		layout.setConstraints(btnRepaint, constraints);
+		constraints.gridx = 1;
+		layout.setConstraints(btnSave, constraints);
+		constraints.gridx = 2;
+		layout.setConstraints(btnShowPresets, constraints);
+		constraints.gridx = 1;
+		constraints.gridy = 4 + fieldLabels.size();
+		layout.setConstraints(btnExit, constraints);
 	}
 
 	public void setPresetPanel(PresetPanel presetPanel) {
