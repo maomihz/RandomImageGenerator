@@ -1,3 +1,4 @@
+package com.maomihz.gui;
 import java.awt.SystemColor;
 
 import javax.swing.JPanel;

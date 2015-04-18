@@ -1,3 +1,4 @@
+package com.maomihz.gui;
 import java.io.IOException;
 
 public class Main {

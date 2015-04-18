@@ -1,3 +1,4 @@
+package com.maomihz.gui;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
