@@ -18,6 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.maomihz.data.Main;
+
 public class OperationalPanel extends JPanel {
 
 	/**

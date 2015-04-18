@@ -8,6 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import com.maomihz.data.Main;
+
 public class PresetPanel extends JPanel {
 
 	/**
