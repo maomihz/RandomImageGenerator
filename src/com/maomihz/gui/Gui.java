@@ -1,6 +1,7 @@
 package com.maomihz.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -27,7 +28,6 @@ public class Gui extends JFrame implements GridBag {
 
 	public Gui() throws IOException {
 		// initialize the GuiFrame
-		setSize(1000, 618);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setTitle("Random Image Generator by Maomi");
 		getContentPane().setLayout(null);
@@ -36,6 +36,7 @@ public class Gui extends JFrame implements GridBag {
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
 		getContentPane().setBackground(Color.GRAY);
+		setMinimumSize(new Dimension(650,540));
 		// setResizable(false);
 		setLocationRelativeTo(null);
 		// create and add setting panel
@@ -50,6 +51,7 @@ public class Gui extends JFrame implements GridBag {
 
 	public void update() {
 		previewPanel.getImagePanel().update();
+		setSize(getPreferredSize());
 	}
 
 	public static Color randColor() {
