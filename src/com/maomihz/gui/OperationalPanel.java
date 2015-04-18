@@ -19,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.maomihz.data.GridBag;
+import com.maomihz.data.ImageConstraints;
 import com.maomihz.data.Main;
 
 public class OperationalPanel extends JPanel implements GridBag {
@@ -34,15 +36,17 @@ public class OperationalPanel extends JPanel implements GridBag {
 	private JLabel title;
 	private JButton btnRepaint, btnSave, btnExit, btnShowPresets;
 	private LoadingWheel animation;
-
+	// presetPanel that makes default options
 	private PresetPanel presetPanel;
+	// the property of image that will be changed by panel
+	private ImageConstraints imageConstraints;
 
-	public JCheckBox getChckbxGrayscale() {
-		return chckbxGrayscale;
-	}
-
-	public OperationalPanel() {
+	// constructor
+	public OperationalPanel(ImageConstraints imageConstraints) {
+		this.imageConstraints = imageConstraints;
+		// initialize the panel
 		setBackground(Color.LIGHT_GRAY);
+		presetPanel = new PresetPanel(this.imageConstraints);
 		// add title to the panel
 		title = new JLabel("Setting");
 		title.setFont(new Font("serif", Font.BOLD, 40));
@@ -65,8 +69,8 @@ public class OperationalPanel extends JPanel implements GridBag {
 			add(fields.get(fieldLabels.indexOf(label)));
 		}
 		// set Default values
-		getFieldByName("Width").setText("680");
-		getFieldByName("Height").setText("960");
+		getFieldByName("Width").setText("320");
+		getFieldByName("Height").setText("480");
 		getFieldByName("Pixel Width").setText("20");
 		getFieldByName("Pixel Height").setText("20");
 		getFieldByName("Number").setText("10");
@@ -100,10 +104,22 @@ public class OperationalPanel extends JPanel implements GridBag {
 		btnRepaint = new JButton("Preview");
 		btnRepaint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// make change to image constraints
+				imageConstraints.width = Integer.parseInt(fields.get(0)
+						.getText());
+				imageConstraints.height = Integer.parseInt(fields.get(1)
+						.getText());
+				imageConstraints.pixelWidth = Integer.parseInt(fields.get(2)
+						.getText());
+				imageConstraints.pixelHeight = Integer.parseInt(fields.get(3)
+						.getText());
+				imageConstraints.number = Integer.parseInt(fields.get(4)
+						.getText());
+				imageConstraints.name = fields.get(5).getText();
+				// update the window
 				Main.window.update();
 			}
 		});
-		btnRepaint.setBounds(16, 350, 91, 29);
 		add(btnRepaint);
 
 		btnSave = new JButton("Save");
@@ -128,10 +144,10 @@ public class OperationalPanel extends JPanel implements GridBag {
 										+ File.separator
 										+ getFieldByName("Name").getText()
 										+ "_"
-										+ Main.window.imagePanel.getImage()
+										+ Main.window.getPreviewImage()
 												.getWidth()
 										+ "x"
-										+ Main.window.imagePanel.getImage()
+										+ Main.window.getPreviewImage()
 												.getHeight() + "_"
 										+ fileNameCount + ".png");
 								fileNameCount++;
@@ -140,8 +156,7 @@ public class OperationalPanel extends JPanel implements GridBag {
 							} while (destination.exists());
 							try {
 								animation.start();
-								ImageIO.write(
-										Main.window.imagePanel.getImage(),
+								ImageIO.write(Main.window.getPreviewImage(),
 										"png", destination);
 								fileNumCount++;
 								System.out.println("I wrote an image");
@@ -170,7 +185,6 @@ public class OperationalPanel extends JPanel implements GridBag {
 				}
 			}
 		});
-		btnShowPresets.setBounds(74, 389, 150, 29);
 		add(btnShowPresets);
 
 		btnExit = new JButton("Exit");
@@ -180,9 +194,12 @@ public class OperationalPanel extends JPanel implements GridBag {
 			}
 		});
 		add(btnExit);
+
+		// set the layout to grid bag layout
 		setGridBagLayout();
 	}
 
+	@Override
 	public void setGridBagLayout() {
 		GridBagLayout layout = new GridBagLayout();
 		setLayout(layout);
@@ -244,8 +261,12 @@ public class OperationalPanel extends JPanel implements GridBag {
 		layout.setConstraints(btnExit, constraints);
 	}
 
-	public void setPresetPanel(PresetPanel presetPanel) {
-		this.presetPanel = presetPanel;
+	public PresetPanel getPresetPanel() {
+		return presetPanel;
+	}
+
+	public ImageConstraints getImageConstraints() {
+		return imageConstraints;
 	}
 
 	private JTextField getFieldByName(String name) {
@@ -254,37 +275,5 @@ public class OperationalPanel extends JPanel implements GridBag {
 				return fields.get(i);
 		}
 		return null;
-	}
-
-	public boolean isGrayScale() {
-		return chckbxGrayscale.isSelected();
-	}
-
-	public boolean saveNultiple() {
-		return chckbxSaveMultiple.isSelected();
-	}
-
-	public String getWidthText() {
-		return fields.get(0).getText();
-	}
-
-	public String getHeightText() {
-		return fields.get(1).getText();
-	}
-
-	public void setWidthText(String s) {
-		fields.get(0).setText(s);
-	}
-
-	public void setHeightText(String s) {
-		fields.get(1).setText(s);
-	}
-
-	public JTextField getPixelWidthField() {
-		return fields.get(2);
-	}
-
-	public JTextField getPixelHeightField() {
-		return fields.get(3);
 	}
 }
